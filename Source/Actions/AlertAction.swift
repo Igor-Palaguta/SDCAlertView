@@ -69,4 +69,8 @@ public class AlertAction: NSObject {
     var actionView: ActionCell? {
         didSet { self.actionView?.enabled = self.enabled }
     }
+
+    var image: UIImage? {
+        didSet { self.actionView?.image = self.image }
+    }
 }
