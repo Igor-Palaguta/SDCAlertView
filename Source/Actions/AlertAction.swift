@@ -70,7 +70,7 @@ public class AlertAction: NSObject {
         didSet { self.actionView?.enabled = self.enabled }
     }
 
-    var image: UIImage? {
+    public dynamic var image: UIImage? {
         didSet { self.actionView?.image = self.image }
     }
 }
