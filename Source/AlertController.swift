@@ -1,5 +1,6 @@
 import UIKit
 
+private var kDidAssignFirstResponderToken: dispatch_once_t = 0
 /**
 The alert controller's style.
 
@@ -28,6 +29,9 @@ public enum ActionLayout: Int {
     case Vertical
     case Horizontal
 }
+
+@available(*, deprecated, renamed="AlertVisualStyle")
+public typealias DefaultVisualStyle = AlertVisualStyle
 
 @objc(SDCAlertController)
 public class AlertController: UIViewController {
@@ -104,18 +108,17 @@ public class AlertController: UIViewController {
         AlertBehaviors.defaultBehaviorsForAlertWithStyle(self.preferredStyle)
 
     /// A closure that, when set, returns whether the alert or action sheet should dismiss after the user taps
-    /// on an action.
+    /// on an action. If it returns false, the AlertAction handler will not be executed.
     public var shouldDismissHandler: (AlertAction? -> Bool)?
 
     /// The visual style that applies to the alert or action sheet.
-    public lazy var visualStyle: DefaultVisualStyle = DefaultVisualStyle(alertStyle: self.preferredStyle)
+    public lazy var visualStyle: AlertVisualStyle = AlertVisualStyle(alertStyle: self.preferredStyle)
 
     /// The alert's presentation style.
     private(set) public var preferredStyle: AlertControllerStyle = .Alert
 
     @IBOutlet private var alertView: AlertControllerView! = AlertView()
     private lazy var transitionDelegate: Transition = Transition(alertStyle: self.preferredStyle)
-    private var didAssignFirstResponder = false
 
     // MARK: - Initialization
 
@@ -232,9 +235,10 @@ public class AlertController: UIViewController {
         // Explanation of why the first responder is set here:
         // http://stackoverflow.com/a/19580888/751268
 
-        if self.behaviors?.contains(.AutomaticallyFocusTextField) == true && !self.didAssignFirstResponder {
-            self.textFields?.first?.becomeFirstResponder()
-            self.didAssignFirstResponder = true
+        if self.behaviors?.contains(.AutomaticallyFocusTextField) == true {
+            dispatch_once(&kDidAssignFirstResponderToken) {
+                self.textFields?.first?.becomeFirstResponder()
+            }
         }
     }
 

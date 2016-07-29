@@ -26,7 +26,7 @@ final class ActionCell: UICollectionViewCell {
         didSet { self.highlightedBackgroundView.hidden = !self.highlighted }
     }
 
-    func setAction(action: AlertAction, withVisualStyle visualStyle: VisualStyle) {
+    func setAction(action: AlertAction, withVisualStyle visualStyle: AlertVisualStyle) {
         action.actionView = self
 
         self.titleLabel.font = visualStyle.font(forAction: action)
@@ -41,6 +41,7 @@ final class ActionCell: UICollectionViewCell {
         self.image = action.image
 
         self.accessibilityLabel = action.attributedTitle?.string
+        self.accessibilityTraits = UIAccessibilityTraitButton
         self.isAccessibilityElement = true
     }
 

@@ -22,7 +22,7 @@ final class ActionSheetView: AlertControllerView {
         didSet { self.actionsCollectionView.actionTapped = self.actionTappedHandler }
     }
 
-    override var visualStyle: VisualStyle! {
+    override var visualStyle: AlertVisualStyle! {
         didSet {
             let widthOffset = self.visualStyle.contentPadding.left + self.visualStyle.contentPadding.right
             self.titleWidthConstraint.constant -= widthOffset
@@ -83,13 +83,13 @@ private extension UIImage {
 
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
 
-        let context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()!
         color.setFill()
         CGContextFillRect(context, rect)
 
-        let image = UIGraphicsGetImageFromCurrentImageContext()
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
 
-        return image;
+        return image
     }
 }

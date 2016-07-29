@@ -47,7 +47,8 @@ public class AlertAction: NSObject {
         self.handler = handler
     }
 
-    var handler: (AlertAction -> Void)?
+    /// A closure that gets executed when the user taps on this actions in the UI
+    public var handler: (AlertAction -> Void)?
 
     /// The plain title for the action. Uses `attributedTitle` directly.
     private(set) public var title: String? {
